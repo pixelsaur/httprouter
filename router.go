@@ -77,13 +77,14 @@
 package httprouter
 
 import (
+	"github.com/pixelsaur/pxs/context"
 	"net/http"
 )
 
 // Handle is a function that can be registered to a route to handle HTTP
 // requests. Like http.HandlerFunc, but has a third parameter for the values of
 // wildcards (variables).
-type Handle func(http.ResponseWriter, *http.Request, Params)
+type Handle func(context.Context)
 
 // Param is a single URL parameter, consisting of a key and a value.
 type Param struct {
@@ -161,8 +162,10 @@ type Router struct {
 	PanicHandler func(http.ResponseWriter, *http.Request, interface{})
 }
 
+/*
 // Make sure the Router conforms with the http.Handler interface
 var _ http.Handler = New()
+*/
 
 // New returns a new initialized Router.
 // Path auto-correction, including trailing slashes, is enabled by default.
@@ -236,7 +239,7 @@ func (r *Router) Handle(method, path string, handle Handle) {
 	root.addRoute(path, handle)
 }
 
-// Handler is an adapter which allows the usage of an http.Handler as a
+/*// Handler is an adapter which allows the usage of an http.Handler as a
 // request handle.
 func (r *Router) Handler(method, path string, handler http.Handler) {
 	r.Handle(method, path,
@@ -250,8 +253,9 @@ func (r *Router) Handler(method, path string, handler http.Handler) {
 // request handle.
 func (r *Router) HandlerFunc(method, path string, handler http.HandlerFunc) {
 	r.Handler(method, path, handler)
-}
+}*/
 
+/*
 // ServeFiles serves files from the given file system root.
 // The path must end with "/*filepath", files are then served from the local
 // path /defined/root/dir/*filepath.
@@ -274,6 +278,7 @@ func (r *Router) ServeFiles(path string, root http.FileSystem) {
 		fileServer.ServeHTTP(w, req)
 	})
 }
+*/
 
 func (r *Router) recv(w http.ResponseWriter, req *http.Request) {
 	if rcv := recover(); rcv != nil {
@@ -331,6 +336,7 @@ func (r *Router) allowed(path, reqMethod string) (allow string) {
 	return
 }
 
+/*
 // ServeHTTP makes the router implement the http.Handler interface.
 func (r *Router) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	if r.PanicHandler != nil {
@@ -408,4 +414,4 @@ func (r *Router) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	} else {
 		http.NotFound(w, req)
 	}
-}
+}*/
